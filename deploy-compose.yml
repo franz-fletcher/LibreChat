@@ -46,11 +46,16 @@ services:
     container_name: chat-mongodb
     # ports:  # Uncomment this to access mongodb from outside docker, not safe in deployment
     #   - 27018:27017
-    image: mongo
-    restart: always
+    image: mongo:8.2
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+    command: mongod --noauth --bind_ip_all --wiredTigerCacheSizeGB 0.5 --quiet
     volumes:
       - ./data-node:/data/db
-    command: mongod --noauth
   meilisearch:
     container_name: chat-meilisearch
     image: getmeili/meilisearch:v1.12.3
@@ -74,10 +79,17 @@ services:
     volumes:
       - pgdata2:/var/lib/postgresql/data
   rag_api:
-    image: ghcr.io/danny-avila/librechat-rag-api-dev-lite:latest
+    image: ghcr.io/danny-avila/librechat-rag-api-dev:latest
+    container_name: librechat-rag-api
     environment:
       - DB_HOST=vectordb
       - RAG_PORT=${RAG_PORT:-8000}
+      - EMBEDDINGS_PROVIDER=huggingface
+      - HF_TOKEN=${HF_TOKEN}
+      - EMBEDDINGS_MODEL=${EMBEDDINGS_MODEL}
+      - COLLECTION_NAME=${RAG_COLLECTION_NAME:-librechat}
+      - CHUNK_SIZE=${RAG_CHUNK_SIZE:-1000}
+      - CHUNK_OVERLAP=${RAG_CHUNK_OVERLAP:-200}
     restart: always
     depends_on:
       - vectordb
