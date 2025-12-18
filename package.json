@@ -84,7 +84,14 @@
     "migrate:agent-permissions:batch": "node config/migrate-agent-permissions.js --batch-size=50",
     "migrate:prompt-permissions:dry-run": "node config/migrate-prompt-permissions.js --dry-run",
     "migrate:prompt-permissions": "node config/migrate-prompt-permissions.js",
-    "migrate:prompt-permissions:batch": "node config/migrate-prompt-permissions.js --batch-size=50"
+    "migrate:prompt-permissions:batch": "node config/migrate-prompt-permissions.js --batch-size=50",
+    "dev:backend:local": "cross-env NODE_ENV=development npm run backend:dev",
+    "dev:frontend:local": "cross-env NODE_ENV=development npm run frontend:dev",
+    "dev:local": "concurrently -n \"backend,frontend\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:backend:local\" \"npm run dev:frontend:local\"",
+    "dev:stop": "pkill -f 'backend:dev|frontend:dev'",
+    "dev:start:deployed": "docker-compose up -d mongodb rag_api meilisearch",
+    "dev:rebuild:deployed": "DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.custom.yml build --memory=14g api",
+    "dev:start:custom": "docker-compose -f docker-compose.yml -f docker-compose.custom.yml up -d"
   },
   "repository": {
     "type": "git",
@@ -104,6 +111,7 @@
     "@playwright/test": "^1.56.1",
     "@types/react-virtualized": "^9.22.0",
     "caniuse-lite": "^1.0.30001741",
+    "concurrently": "^9.2.1",
     "cross-env": "^7.0.3",
     "elliptic": "^6.6.1",
     "eslint": "^9.39.1",

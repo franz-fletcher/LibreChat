@@ -1,0 +1,1 @@
+{"mcpServers":{"exa":{"command":"npx","args":["-y","mcp-remote","https://mcp.exa.ai/mcp?exaApiKey=041526e8-334a-45db-9fcb-f9436844ccf0"],"alwaysAllow":["web_search_exa","get_code_context_exa"]}}}
