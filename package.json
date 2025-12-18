@@ -90,7 +90,7 @@
     "dev:local": "concurrently -n \"backend,frontend\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:backend:local\" \"npm run dev:frontend:local\"",
     "dev:stop": "pkill -f 'backend:dev|frontend:dev'",
     "dev:start:deployed": "docker-compose up -d mongodb rag_api meilisearch",
-    "dev:rebuild:deployed": "DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.custom.yml build --memory=14g api",
+    "dev:build:custom": "DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.custom.yml build --memory=14g api",
     "dev:start:custom": "docker-compose -f docker-compose.yml -f docker-compose.custom.yml up -d"
   },
   "repository": {
